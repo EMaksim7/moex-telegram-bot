@@ -7,3 +7,7 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.10
+      - key: BOT_TOKEN
+        value: "8089417044:AAHpOMAVXazxziQlWyrlusJgkRGDSgFny2s"
+      - key: CHAT_ID
+        value: "987387288"
