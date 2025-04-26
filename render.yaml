@@ -1,0 +1,9 @@
+services:
+  - type: worker
+    name: moex-telegram-bot
+    runtime: python
+    buildCommand: ""
+    startCommand: "python main.py"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10

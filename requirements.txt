@@ -1,0 +1,7 @@
+python-telegram-bot[job-queue]==20.8
+aiohttp
+httpx
+pandas
+lxml
+beautifulsoup4
+apscheduler
