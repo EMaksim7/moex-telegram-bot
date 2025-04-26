@@ -1,3 +1,4 @@
+import os
 import requests
 import pandas as pd
 import datetime
@@ -5,11 +6,13 @@ import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackContext, CallbackQueryHandler, ContextTypes, JobQueue
 import nest_asyncio
+import asyncio
+
 nest_asyncio.apply()
 
-# Replace with your Telegram Bot Token
-BOT_TOKEN = '8089417044:AAHpOMAVXazxziQlWyrlusJgkRGDSgFny2s'
-CHAT_ID = '987387288'  # Optional: you can hardcode this or use the dynamic one from Update
+# Environment Variables
+BOT_TOKEN = os.getenv('8089417044:AAHpOMAVXazxziQlWyrlusJgkRGDSgFny2s')
+CHAT_ID = os.getenv('987387288')
 
 # List of 20 MOEX tickers
 TICKERS = [
@@ -50,7 +53,9 @@ def fetch_stock_data():
             results.append({
                 'ticker': ticker,
                 'change': round(percent_change, 2),
-                'status': current_price > open_price
+                'status': current_price > open_price,
+                'open': open_price,
+                'current': current_price
             })
         except Exception as e:
             logger.warning(f"Failed for {ticker}: {e}")
@@ -69,13 +74,13 @@ def generate_alert(results):
     for r in results:
         direction = "📈 UP" if r["change"] > 0 else "📉 DOWN"
         message_lines.append(
-            f"{r['ticker']}: {direction} {r['change']:.2f}% (from {r['open']} to {r['current']})"
+            f"{r['ticker']}: {direction} {r['change']:.2f}% (from {r['open']:.2f} to {r['current']:.2f})"
         )
 
     message_lines.append(f"\n📊 TOTAL AVERAGE CHANGE: {total_change:.2f}%")
 
     # Check if total average crosses threshold
-    if abs(total_change) >= THRESHOLD:
+    if abs(total_change) >= THRESHOLD_TOTAL:
         message_lines.append(
             "🚨 Market-wide movement detected!" +
             (" 📈 Average UP" if total_change > 0 else " 📉 Average DOWN")
@@ -125,14 +130,9 @@ async def main():
 
 # Entry point
 if __name__ == '__main__':
-    import asyncio
     asyncio.run(main())
 
-for ticker in COMPANIES:
-    try:
-        data = get_moex_data(ticker)
-        if data:
-            results.append(data)
+
         else:
             print(f"[DEBUG] No data for {ticker}")
     except Exception as e:
