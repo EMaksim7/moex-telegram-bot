@@ -6,3 +6,4 @@ lxml
 beautifulsoup4
 apscheduler
 requests
+nest_asyncio
