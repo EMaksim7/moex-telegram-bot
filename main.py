@@ -131,9 +131,3 @@ async def main():
 # Entry point
 if __name__ == '__main__':
     asyncio.run(main())
-
-
-        else:
-            print(f"[DEBUG] No data for {ticker}")
-    except Exception as e:
-        print(f"[ERROR] Failed to fetch data for {ticker}: {e}")
