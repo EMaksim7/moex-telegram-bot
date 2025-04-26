@@ -12,7 +12,7 @@ nest_asyncio.apply()
 
 # Environment Variables
 BOT_TOKEN = os.getenv('BOT_TOKEN')
-CHAT_ID = os.getenv('987387288')
+CHAT_ID = os.getenv('CHAT_ID')
 
 # List of 20 MOEX tickers
 TICKERS = [
