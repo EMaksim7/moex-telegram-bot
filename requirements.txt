@@ -1,9 +1,5 @@
 python-telegram-bot[job-queue]==20.8
-aiohttp==3.8.6
+pandas==2.2.3
 httpx==0.26.0
-pandas==2.2.1
-lxml
-beautifulsoup4
-apscheduler
-requests
-nest_asyncio==1.5.8
+aiohttp==3.9.5
+--upgrade-strategy eager
