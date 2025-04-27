@@ -127,10 +127,10 @@ async def main():
     job_queue: JobQueue = app.job_queue
     job_queue.run_repeating(scheduled_check, interval=900, first=5)
 
-await app.start()
-await app.bot.set_webhook(WEBHOOK_URL)
-await app.updater.start_webhook(listen="0.0.0.0", port=10000, url_path="/", webhook_url=WEBHOOK_URL)
-await app.updater.idle()
+    await app.start()
+    await app.bot.set_webhook(WEBHOOK_URL)
+    await app.updater.start_webhook(listen="0.0.0.0", port=10000, url_path="/", webhook_url=WEBHOOK_URL)
+    await app.updater.idle()
 
 # Entry point
 if __name__ == '__main__':
