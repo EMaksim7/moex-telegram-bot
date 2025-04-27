@@ -13,6 +13,7 @@ nest_asyncio.apply()
 # Environment Variables
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 CHAT_ID = os.getenv('CHAT_ID')
+WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
 # List of 20 MOEX tickers
 TICKERS = [
@@ -126,7 +127,10 @@ async def main():
     job_queue: JobQueue = app.job_queue
     job_queue.run_repeating(scheduled_check, interval=900, first=5)
 
-    await app.run_polling()
+await app.start()
+await app.bot.set_webhook(WEBHOOK_URL)
+await app.updater.start_webhook(listen="0.0.0.0", port=10000, url_path="/", webhook_url=WEBHOOK_URL)
+await app.updater.idle()
 
 # Entry point
 if __name__ == '__main__':
