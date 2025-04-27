@@ -5,10 +5,7 @@ import datetime
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackContext, CallbackQueryHandler, ContextTypes, JobQueue
-import nest_asyncio
 import asyncio
-
-nest_asyncio.apply()
 
 # Environment Variables
 BOT_TOKEN = os.getenv('BOT_TOKEN')
@@ -127,9 +124,16 @@ async def main():
     job_queue: JobQueue = app.job_queue
     job_queue.run_repeating(scheduled_check, interval=900, first=5)
 
-    await app.start()
+    # Initialize and setup webhook
+    await app.initialize()
     await app.bot.set_webhook(WEBHOOK_URL)
-    await app.updater.start_webhook(listen="0.0.0.0", port=10000, url_path="/", webhook_url=WEBHOOK_URL)
+    await app.start()
+    await app.updater.start_webhook(
+        listen="0.0.0.0",
+        port=10000,
+        url_path="/",
+        webhook_url=WEBHOOK_URL
+    )
     await app.updater.idle()
 
 # Entry point
